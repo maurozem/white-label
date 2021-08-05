@@ -6,13 +6,14 @@ plugins {
 
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "br.com.douglasmotta.whitelabeltutorial"
+        applicationId "ms.zem.whitelabeltutorial"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -37,12 +38,38 @@ android {
     buildFeatures {
         viewBinding true
     }
+    productFlavors {
+        flavorDimensions 'product', 'side'
+        bike {
+            dimension 'product'
+            applicationIdSuffix '.bike'
+            manifestPlaceholders.appName = "Bike"
+
+            buildConfigField "String", "FIREBASE_FLAVOR_COLLECTION", "\"bike\""
+        }
+        car {
+            dimension 'product'
+            applicationIdSuffix '.car'
+            manifestPlaceholders.appName = "Car"
+
+            buildConfigField "String", "FIREBASE_FLAVOR_COLLECTION", "\"car\""
+        }
+        client {
+            dimension 'side'
+            manifestPlaceholders.appNameSuffix = ""
+        }
+        admin {
+            dimension 'side'
+            applicationIdSuffix '.admin'
+            manifestPlaceholders.appNameSuffix = ".Admin"
+        }
+    }
 }
 
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
@@ -53,7 +80,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
 
     implementation platform('com.google.firebase:firebase-bom:28.2.0')
     implementation 'com.google.firebase:firebase-firestore-ktx'
